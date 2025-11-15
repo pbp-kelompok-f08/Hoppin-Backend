@@ -30,6 +30,7 @@ urlpatterns = [
     path('threads/', include('threads.urls', namespace='threads')),
     path('booking-venue/', include('booking_venue.urls', namespace='booking_venue')),
     path('', views.home, name="home"),
+    path('auth/', include('authentication.urls')),
 ]
 
 if settings.DEBUG:

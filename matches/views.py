@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from liveChat.models import Group
-from accounts.models import CustomUser  # ✅ pastikan pakai model user-mu
+from accounts.models import CustomUser  
 import json, uuid
 from django.utils import timezone
 from datetime import timedelta
@@ -102,7 +102,6 @@ def match_dashboard(request):
 
     _ensure_default_categories()
 
-    # ===================== MATCH FILTER =====================
     matches = (
         Match.objects.select_related("category")
         .annotate(participant_count=Count("participations"))
@@ -162,28 +161,24 @@ def match_dashboard(request):
                 }
             )
         return JsonResponse({"groups": payload})
-
-    # ===================== SIDEBAR STATS =====================
+    
     now = timezone.now()
     today = now.date()
     ten_minutes_ago = now - timedelta(minutes=10)
 
-    # total matches, etc.
     total_matches = Match.objects.count()
     today_matches = Match.objects.filter(event_date__date=today).count()
     total_players = Participation.objects.values('user').distinct().count()
     sports_count = SportCategory.objects.count()
 
-    # ✅ user online & active today
     players_online = CustomUser.objects.filter(last_activity__gte=ten_minutes_ago).distinct().count()
     players_active_today = CustomUser.objects.filter(last_activity__date=today).distinct().count()
 
-    # popular sports
     popular_sports = (
         SportCategory.objects.annotate(match_count=Count("matches"))
         .order_by("-match_count")[:3]
     )
-    # recent activity
+
     recent_activity = Match.objects.select_related("category").order_by("-id")[:5]
 
     context = {
@@ -276,7 +271,6 @@ def book_match(request: HttpRequest, match_id: uuid):
             status=400,
         )
 
-    # 🚨 Tambahkan ini untuk mencegah user join dua kali
     if Participation.objects.filter(match=match, user=request.user).exists():
         return JsonResponse(
             {

@@ -214,7 +214,6 @@
   </main>
 </div>
 
-<!-- ============== CREATE MATCH MODAL (single source of truth) ============== -->
 <div id="create-match-modal" class="fixed inset-0 z-[1000] hidden" aria-hidden="true" data-open="false">
   <div class="absolute inset-0 bg-black/60"></div>
   <div class="relative max-w-2xl w-[92%] mx-auto my-10 bg-[#1A1A1A] text-[#EAEAEA]
@@ -299,7 +298,6 @@
   </div>
 </div>
 
-<!-- ============== INLINE STYLE for fallback (optional) ============== -->
 <style>
   body { background-color: #0E0E0E; color: #EAEAEA; font-family: 'Roboto Mono', monospace; letter-spacing: .3px; }
 </style>
@@ -310,7 +308,7 @@
 {% if schema_ready %}
 <script>
 (function() {
-  // ========= Helpers =========
+
   const body        = document.body;
   const searchForm  = document.getElementById('match-search-form');
   const createForm  = document.getElementById('match-create-form');
@@ -337,7 +335,6 @@
       .replace(/'/g, '&#x27;');
   }
   function showToast(msg, type) {
-    // Minimal toast without external libs (dark + glow)
     const t = document.createElement('div');
     t.textContent = msg || '';
     t.style.position = 'fixed';
@@ -361,7 +358,6 @@
     setTimeout(() => t.remove(), 2600);
   }
 
-  // ========= Modal Controls =========
   function openModal() {
     if (!modal) return;
     modal.classList.remove('hidden');
@@ -393,7 +389,7 @@
     createErrors.classList.remove('hidden');
     createErrors.removeAttribute('hidden');
   }
-  // Bind modal events
+
   if (openModalBtn) openModalBtn.addEventListener('click', openModal);
   if (emptyBtn) emptyBtn.addEventListener('click', openModal);
   if (modal) {
@@ -409,7 +405,6 @@
     });
   }
 
-  // ========= Render Matches =========
   function renderGroups(groups) {
     if (!Array.isArray(groups) || groups.length === 0) {
       matchList.innerHTML = '';
@@ -484,7 +479,6 @@
     attachBookingHandlers();
   }
 
-  // ========= Data Loading =========
   async function loadMatches(formData) {
     const endpoint = searchForm?.getAttribute('action') || window.location.pathname;
     const params   = new URLSearchParams(formData || new FormData(searchForm));
@@ -507,7 +501,6 @@
     }
   }
 
-  // ========= Create Match =========
   async function handleCreate(e) {
     e.preventDefault();
     if (!createForm) return;
@@ -542,7 +535,6 @@
     }
   }
 
-  // ========= Booking =========
   async function handleBooking(e) {
     e.preventDefault();
     const form = e.target;
@@ -588,12 +580,11 @@
   });
 
 
-  // ========= Init =========
   if (searchForm) {
     searchForm.addEventListener('submit', (e) => { e.preventDefault(); loadMatches(new FormData(searchForm)); });
   }
   if (createForm) createForm.addEventListener('submit', handleCreate);
-  loadMatches(); // first render
+  loadMatches(); 
 })();
 </script>
 {% endif %}
