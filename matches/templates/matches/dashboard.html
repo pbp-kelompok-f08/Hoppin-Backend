@@ -294,6 +294,7 @@
 {% if schema_ready %}
 <script>
 (function() {
+
   const body        = document.body;
   const searchForm  = document.getElementById('match-search-form');
   const createForm  = document.getElementById('match-create-form');
@@ -374,6 +375,7 @@
     createErrors.classList.remove('hidden');
     createErrors.removeAttribute('hidden');
   }
+
   if (openModalBtn) openModalBtn.addEventListener('click', openModal);
   if (emptyBtn) emptyBtn.addEventListener('click', openModal);
   if (modal) {
@@ -563,11 +565,12 @@
     }
   });
 
+
   if (searchForm) {
     searchForm.addEventListener('submit', (e) => { e.preventDefault(); loadMatches(new FormData(searchForm)); });
   }
   if (createForm) createForm.addEventListener('submit', handleCreate);
-  loadMatches();
+  loadMatches(); 
 })();
 </script>
 {% endif %}

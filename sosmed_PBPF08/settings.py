@@ -38,7 +38,7 @@ PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'm-naufal41-hoppin.pbp.cs.ui.ac.id', '.vercel.app']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'm-naufal41-hoppin.pbp.cs.ui.ac.id', '.vercel.app', "10.0.2.2"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://m-naufal41-hoppin.pbp.cs.ui.ac.id", 'https://hoppin-lac.vercel.app',
@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'accounts',
     'matches',
     'threads',
+    'authentication',
+    'corsheaders',
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -85,6 +87,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'accounts.middleware.UpdateLastActivityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'sosmed_PBPF08.urls'
@@ -181,3 +184,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
