@@ -135,18 +135,15 @@ def update_profile(request):
     profile_picture = request.FILES.get("profile_picture")
     remove_picture = request.POST.get("remove_picture")
 
-    # --- Cek email duplikat  ---
     if email and email != user.email and CustomUser.objects.filter(email=email).exists():
         return JsonResponse({"status": "error", "message": "Email already taken."}, status=400)
 
-    # --- Update field ---
     if email:
         user.email = email
     user.bio = bio
     user.favorite_sport = favorite_sport or None
     user.skill_level = skill_level or None
 
-    # --- Profile picture ---
     if remove_picture == "true":
         if user.profile_picture:
             user.profile_picture.delete(save=False)

@@ -5,16 +5,13 @@
 {% block content %}
 {% include 'navbar.html' %}
 
-<!-- Font -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-<!-- Toast Container -->
 <div id="toast-container" class="fixed top-5 right-5 space-y-3 z-50"></div>
 
 <div class="min-h-screen bg-[#121212] text-[#E6E8E6] flex flex-col pt-24" style="font-family: 'Roboto Mono', monospace;">
   <div class="container mx-auto px-6 space-y-8">
 
-    <!-- PROFILE HEADER BOX -->
     <div class="bg-[#1E1E1E] backdrop-blur-sm rounded-xl p-10 border border-[#4A5568]/30 shadow-lg flex flex-col sm:flex-row sm:items-center sm:space-x-8 space-y-6 sm:space-y-0 transition-all">
       <div class="flex justify-center sm:justify-start">
         <img id="user-pic" 
@@ -35,7 +32,6 @@
       </div>
     </div>
 
-    <!-- DETAIL BOX -->
     <div class="bg-[#1E1E1E] backdrop-blur-sm rounded-xl p-8 border border-[#4A5568]/30 shadow-lg">
       <div class="mb-6">
         <h4 class="text-sm text-[#9DB4C0] uppercase tracking-wide mb-1">Bio</h4>
@@ -58,7 +54,6 @@
       </div>
     </div>
 
-    <!-- EDIT FORM (HIDDEN) -->
     <div id="edit-form" 
         class="hidden bg-[#1E1E1E]/80 backdrop-blur-sm p-8 mt-10 rounded-xl border border-[#4A5568]/30 
                 shadow-lg max-w-3xl w-full mx-auto transition-all duration-300">
@@ -139,7 +134,6 @@
       </form>
     </div>
 
-    <!-- USER THREADS BOX -->
     <div id="user-threads-box"
             class="bg-[#1E1E1E] rounded-xl border border-[#4A5568]/30 shadow-lg mt-8 p-6 max-h-[800px] overflow-y-auto">
         <h3 class="text-xl font-semibold mb-4 text-[#E6E8E6]">Your Threads</h3>

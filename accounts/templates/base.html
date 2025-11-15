@@ -11,7 +11,6 @@
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
   
-  <!-- 🌟 Navbar optional -->
   {% block navbar %}
   <nav class="bg-white shadow p-4">
     <div class="container mx-auto flex justify-between">
@@ -29,15 +28,12 @@
   </nav>
   {% endblock navbar %}
 
-  <!-- ✨ Toast Container -->
   {% include 'partials/toast.html' %}
 
-  <!-- 🧱 Main Content -->
   <main class="flex-grow container mx-auto p-6">
     {% block content %}{% endblock content %}
   </main>
 
-  <!-- 🦶 Footer -->
   {% block footer %}
   <footer class="bg-white shadow-inner py-4 text-center text-gray-500 text-sm">
     © 2025 MyProject — All rights reserved.

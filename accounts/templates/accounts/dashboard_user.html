@@ -5,31 +5,24 @@
 {% block content %}
 {% include 'navbar.html' %}
 
-<!-- Roboto Mono -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <div class="min-h-screen bg-[#121212] text-[#E6E8E6] pt-20" style="font-family: 'Roboto Mono', monospace;">
   <div class="container mx-auto px-6 py-8">
 
-    <!-- Welcome Section -->
     <div class="bg-[#1E1E1E]/60 backdrop-blur-sm rounded-xl p-8 border border-[#4A5568]/30 mb-8 shadow-lg">
       <div class="flex flex-col md:flex-row items-center justify-between">
         <div>
           <h1 class="text-4xl font-bold mb-2 text-[#E6E8E6]">Welcome back, {{ request.user.username }}!</h1>
         </div>
         <div class="mt-6 md:mt-0">
-          <!-- Role badge -->
           <div class="rounded-full px-6 py-3 bg-[#E6E8E6] border border-[#E6E8E6] shadow-sm">
             <span class="text-[#253237] font-semibold">{{ request.user.role|title }}</span>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Quick Actions -->
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-
-      <!-- Threads -->
       <a href="/threads/" 
         class="bg-[#E6E8E6] hover:bg-[#DADFE1] text-[#253237] border border-[#394957] rounded-xl p-6 transition-all duration-300 transform hover:scale-105 group shadow-md">
         <div class="w-12 h-12 bg-[#DADFE1] border border-[#394957] rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -45,8 +38,6 @@
         <p class="text-[#394957] text-sm">Share experiences and connect with the community</p>
       </a>
 
-
-      <!-- Book Venue -->
       <a href="/booking-venue/" 
         class="bg-[#E6E8E6] hover:bg-[#DADFE1] text-[#253237] border border-[#394957] rounded-xl p-6 transition-all duration-300 transform hover:scale-105 group shadow-md">
         <div class="w-12 h-12 bg-[#DADFE1] border border-[#394957] rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -64,7 +55,6 @@
         <p class="text-[#394957] text-sm">Find and reserve sports facilities</p>
       </a>
 
-      <!-- Find Matches -->
       <a href="/matches/" 
         class="bg-[#E6E8E6] hover:bg-[#DADFE1] text-[#253237] border border-[#394957] rounded-xl p-6 transition-all duration-300 transform hover:scale-105 group shadow-md">
         <div class="w-12 h-12 bg-[#DADFE1] border border-[#394957] rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -88,7 +78,6 @@
         <p class="text-[#394957] text-sm">Join or create sports events</p>
       </a>
 
-      <!-- Live Chat -->
       <a href="/liveChat/" 
         class="bg-[#E6E8E6] hover:bg-[#DADFE1] text-[#253237] border border-[#394957] rounded-xl p-6 transition-all duration-300 transform hover:scale-105 group shadow-md">
         <div class="w-12 h-12 bg-[#DADFE1] border border-[#394957] rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -110,7 +99,6 @@
       </a>
     </div>
 
-    <!-- Profile Summary -->
     <div class="grid lg:grid-cols-2 gap-8 mb-12">
       <div class="bg-[#1E1E1E]/60 backdrop-blur-sm rounded-xl p-6 border border-[#4A5568]/30 shadow-md">
         <h3 class="text-xl font-semibold mb-4 text-[#E6E8E6]">Your Profile</h3>
@@ -123,7 +111,6 @@
         <a href="/profile/" class="inline-block mt-4 text-[#9DB4C0] hover:text-[#E6E8E6] font-medium">Edit Profile →</a>
       </div>
 
-      <!-- Personal Overview -->
       <div class="bg-[#1E1E1E]/60 backdrop-blur-sm rounded-xl p-6 border border-[#4A5568]/30 shadow-md">
         <h3 class="text-xl font-semibold mb-4 text-[#E6E8E6]">Personal Overview</h3>
         <div class="space-y-4 text-[#E6E8E6]">

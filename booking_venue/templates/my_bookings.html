@@ -6,7 +6,6 @@
 {% block content %}
 {% include 'navbar.html' %}
 <body class="min-h-screen bg-[#0E0E0E] text-[#EAEAEA]" style="font-family: 'Roboto Mono', monospace;">
-    <!-- Header Section -->
     <div class="bg-[#1C1C1C]/80 border-b border-[#2A2A2A] backdrop-blur-sm pt-20">
         <div class="container mx-auto px-6 py-8">
             <div class="flex flex-col md:flex-row items-center justify-between">
@@ -26,7 +25,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="container mx-auto px-6 py-12">
         {% if bookings %}
         <div class="space-y-6">
@@ -84,7 +82,6 @@
             {% endfor %}
         </div>
         {% else %}
-        <!-- Empty State -->
         <div class="text-center py-16">
             <div class="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center bg-white shadow-[0_0_25px_rgba(0,255,148,0.35)]">
                 <span class="text-3xl">📋</span>

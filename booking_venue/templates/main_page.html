@@ -6,7 +6,6 @@
 {% block content %}
 {% include 'navbar.html' %}
 <body class="min-h-screen bg-[#0E0E0E] text-[#EAEAEA]" style="font-family: 'Roboto Mono', monospace;">
-    <!-- Header Section -->
     <div class="bg-[#1C1C1C]/80 border-b border-[#2A2A2A] backdrop-blur-sm pt-20">
         <div class="container mx-auto px-6 py-8">
             <div class="flex flex-col md:flex-row items-center justify-between">
@@ -26,7 +25,6 @@
                 {% endif %}
             </div>
 
-            <!-- Filters Section -->
             <div class="mt-8 bg-[#1A1A1A]/80 border-[#2A2A2A] backdrop-blur-xl rounded-2xl p-6 border shadow-[0_0_10px_rgba(0,0,0,0.35)]">
                 <form method="get" class="flex flex-col md:flex-row gap-4 items-end">
                     <div class="flex-1">
@@ -65,13 +63,11 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="container mx-auto px-6 py-12">
         {% if venues %}
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {% for venue in venues %}
             <div class="bg-[#161616] hover:bg-[#1F1F1F] border border-[#2A2A2A] rounded-2xl p-6 shadow-[0_0_10px_rgba(0,0,0,0.4)] transition hover:-translate-y-1 hover:shadow-[0_0_22px_rgba(0,255,148,0.16)] flex flex-col">
-                <!-- Venue Header -->
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex-1">
                         <h3 class="text-2xl font-semibold tracking-wide text-white mb-3">
@@ -84,7 +80,6 @@
                     </div>
                 </div>
 
-                <!-- Venue Details -->
                 <div class="space-y-3 mb-6">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-2">
@@ -102,12 +97,10 @@
                     </div>
                 </div>
 
-                <!-- Description -->
                 <p class="text-[#CFCFCF] text-sm leading-relaxed mb-4 line-clamp-3">
                     {{ venue.description|truncatechars:120 }}
                 </p>
 
-                <!-- Action Button -->
                 <a href="{% url 'booking_venue:book_venue' venue.id %}"
                    class="w-full py-2.5 rounded-xl font-semibold text-white transition bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] transition-all duration-300 bg-whitshadow-[0_0_15px_rgba(255,255,255,0.35)]e flex items-center justify-center gap-2 mt-auto mb-2.5">
                     <span class="text-lg">🎫</span>
@@ -117,7 +110,6 @@
             {% endfor %}
         </div>
         {% else %}
-        <!-- Empty State -->
         <div class="text-center py-16">
             <div class="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center bg-white shadow-[0_0_25px_rgba(0,255,148,0.35)]">
                 <span class="text-4xl">🏟️</span>

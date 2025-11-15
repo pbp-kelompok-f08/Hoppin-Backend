@@ -70,12 +70,8 @@ def delete_thread(request, thread_id):
 
 
 def get_replies_by_threadId(request, threadId):
-    # get user or return 404
-
-    # get all replies made by this user
     replies = ReplyChild.objects.filter(thread=threadId).order_by('-likeCount')
 
-    # serialize the data manually (or you can use serializers)
     data = [
         {
             'user':{
@@ -97,7 +93,6 @@ def get_replies_by_threadId(request, threadId):
         for reply in replies
     ]
 
-    # return as JSON
     return JsonResponse(data, safe=False)
 
 @login_required

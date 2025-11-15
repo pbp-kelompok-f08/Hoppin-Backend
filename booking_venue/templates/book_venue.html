@@ -6,7 +6,6 @@
 {% block content %}
 {% include 'navbar.html' %}
 <body class="min-h-screen bg-[#0E0E0E] text-[#EAEAEA]" style="font-family: 'Roboto Mono', monospace;">
-    <!-- Header Section -->
     <div class="bg-[#1C1C1C]/80 border-b border-[#2A2A2A] backdrop-blur-sm pt-20">
         <div class="container mx-auto px-6 py-8">
             <div class="flex flex-col md:flex-row items-center justify-between">
@@ -52,7 +51,6 @@
 
     <div class="container mx-auto px-6 py-8">
         <div class="max-w-4xl mx-auto">
-            <!-- Back Button -->
             <a href="{% url 'booking_venue:main_page' %}"
                 class="inline-flex items-center text-[#A1A1A1] hover:text-[#EAEAEA] mb-6 transition-colors">
                 <span class="text-lg mr-2">⬅️</span>
@@ -60,7 +58,6 @@
             </a>
 
             <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Venue Details -->
                 <div class="lg:col-span-2">
                     <div class="bg-[#1A1A1A]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#2A2A2A] shadow-[0_0_10px_rgba(0,0,0,0.35)] mb-8">
                         <div class="flex items-start space-x-6 mb-6">
@@ -93,7 +90,6 @@
                         </div>
                     </div>
 
-                    <!-- Booking Form -->
                     <div class="bg-[#1A1A1A]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#2A2A2A] shadow-[0_0_10px_rgba(0,0,0,0.35)]">
                         <h2 class="text-2xl font-bold mb-6">Book This Venue</h2>
 
@@ -113,7 +109,6 @@
                                 </div>
                             </div>
 
-                            <!-- Duration Selection -->
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-[#CFCFCF] mb-3">Duration (hours)</label>
                                 <div class="grid grid-cols-4 gap-3">
@@ -125,7 +120,6 @@
                                 <input type="hidden" name="duration" id="selected-duration" value="1">
                             </div>
 
-                            <!-- Price Summary -->
                             <div class="bg-[#202020] rounded-lg p-4 mb-6 border border-[#2A2A2A]">
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="text-[#CFCFCF]">Price per hour:</span>
@@ -142,7 +136,6 @@
                                 </div>
                             </div>
 
-                            <!-- Submit Button -->
                             <button type="submit" id="submit-booking"
                                 class="w-full py-4 rounded-xl font-semibold text-black transition bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] transition-all duration-300 bg-whitshadow-[0_0_15px_rgba(255,255,255,0.35)]e">
                                 Confirm Booking
@@ -151,9 +144,7 @@
                     </div>
                 </div>
 
-                <!-- Sidebar -->
                 <div class="space-y-6">
-                    <!-- Booking Rules -->
                     <div class="bg-[#1A1A1A]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#2A2A2A] shadow-[0_0_10px_rgba(0,0,0,0.35)]">
                         <h3 class="text-lg font-semibold mb-4 flex items-center text-white">
                             <span class="text-lg mr-2">✅</span>
@@ -179,7 +170,6 @@
                         </ul>
                     </div>
 
-                    <!-- Contact Info -->
                     <div class="bg-[#1A1A1A]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#2A2A2A] shadow-[0_0_10px_rgba(0,0,0,0.35)]">
                         <h3 class="text-lg font-semibold mb-4 flex items-center text-white">
                             <span class="text-lg mr-2">📞</span>
@@ -204,15 +194,12 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const venuePrice = 100; // Fixed price
+        const venuePrice = 100;
         let selectedDuration = 1;
 
-        // Duration selection
         document.querySelectorAll('.duration-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                // Remove active class from all buttons
                 document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('bg-[#343434]'));
-                // Add active class to clicked button
                 this.classList.add('bg-[#343434]');
 
                 selectedDuration = parseInt(this.dataset.duration);
@@ -221,7 +208,6 @@
             });
         });
 
-        // Set default duration button as active
         document.querySelector('.duration-btn[data-duration="1"]').classList.add('bg-[#343434]');
 
         function updatePrice() {
@@ -230,7 +216,6 @@
             document.getElementById('total-price').textContent = `$${total}`;
         }
 
-        // Form validation
         const bookingForm = document.getElementById('booking-form');
         const submitBtn = document.getElementById('submit-booking');
 
@@ -244,7 +229,6 @@
                 return;
             }
 
-            // Check if booking is at least 2 hours in advance
             const bookingDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
             const now = new Date();
             const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
@@ -255,12 +239,10 @@
                 return;
             }
 
-            // Disable button and show loading
             submitBtn.disabled = true;
             submitBtn.textContent = 'Processing...';
         });
 
-        // Set minimum date to tomorrow
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         document.getElementById('booking-date').min = tomorrow.toISOString().split('T')[0];

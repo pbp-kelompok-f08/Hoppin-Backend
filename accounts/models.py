@@ -11,7 +11,6 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=255, primary_key=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user', blank=True)
 
-    # Profile Info
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     favorite_sport = models.CharField(max_length=50, blank=True, null=True)
