@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 import json
+from accounts.models import CustomUser
 
 @csrf_exempt
 def login(request):
@@ -49,14 +50,14 @@ def register(request):
             }, status=400)
         
         # Check if the username is already taken
-        if User.objects.filter(username=username).exists():
+        if CustomUser.objects.filter(username=username).exists():
             return JsonResponse({
                 "status": False,
                 "message": "Username already exists."
             }, status=400)
         
         # Create the new user
-        user = User.objects.create_user(username=username, password=password1)
+        user = CustomUser.objects.create_user(username=username, password=password1)
         user.save()
         
         return JsonResponse({
