@@ -7,7 +7,8 @@ from django.http import JsonResponse
 from django.core import serializers
 from .models import Venue, Booking
 from .forms import BookingForm
-
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 
 def main_page(request):
     """
@@ -98,6 +99,9 @@ def cancel_booking(request, booking_id):
         messages.success(request, 'Booking telah dibatalkan.')
     return redirect('booking_venue:my_bookings')
 
+# Data delivery for flutter
+
+@csrf_exempt
 def api_venues(request):
     """
     API endpoint to get venues data for frontend.
@@ -116,3 +120,63 @@ def api_venues(request):
         })
 
     return JsonResponse({'venues': venues_data})
+
+@csrf_exempt
+def api_bookings(request):
+    """
+    API endpoint to get bookings data for frontend.
+    """
+    if request.method == 'GET':
+        bookings = Booking.objects.all()
+
+        bookings_data = []
+        for booking in bookings:
+            bookings_data.append({
+                'id': str(booking.id),
+                'user': booking.user.username,
+                'venue': booking.venue.name,
+                'date': booking.date.strftime('%Y-%m-%d'),
+                'time': booking.time.strftime('%H:%M:%S'),
+                'status': booking.status,
+            })
+
+        return JsonResponse({'bookings': bookings_data})
+    else:
+        return JsonResponse({'message': 'Invalid request method.'}, status=400)
+    
+@require_GET
+@csrf_exempt
+def filter_venues_api(request):
+    """
+    API untuk memfilter venue berdasarkan region dan alphabet.
+    """
+    venues = Venue.objects.all()
+
+    region_filter = request.GET.get('region', '')
+    alphabet_filter = request.GET.get('alphabet', '')
+
+    if region_filter:
+        venues = venues.filter(location__icontains=region_filter)
+
+    if alphabet_filter:
+        if alphabet_filter.lower() == 'other':
+            venues = venues.exclude(name__regex=r'^[A-Za-z]')
+        else:
+            venues = venues.filter(name__istartswith=alphabet_filter)
+
+    venue_list = [
+        {
+            "id": v.id,
+            "name": v.name,
+            "location": v.location,
+            "capacity": v.capacity,
+            "price": str(v.price),
+        }
+        for v in venues
+    ]
+
+    return JsonResponse({
+        "venues": venue_list,
+        "current_region": region_filter,
+        "current_alphabet": alphabet_filter,
+    }, status=200)
