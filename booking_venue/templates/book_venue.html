@@ -109,32 +109,6 @@
                                 </div>
                             </div>
 
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-[#CFCFCF] mb-3">Duration (hours)</label>
-                                <div class="grid grid-cols-4 gap-3">
-                                    <button type="button" data-duration="1" class="duration-btn bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] py-3 rounded-lg transition-colors">1 hour</button>
-                                    <button type="button" data-duration="2" class="duration-btn bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] py-3 rounded-lg transition-colors">2 hours</button>
-                                    <button type="button" data-duration="3" class="duration-btn bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] py-3 rounded-lg transition-colors">3 hours</button>
-                                    <button type="button" data-duration="4" class="duration-btn bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] py-3 rounded-lg transition-colors">4 hours</button>
-                                </div>
-                                <input type="hidden" name="duration" id="selected-duration" value="1">
-                            </div>
-
-                            <div class="bg-[#202020] rounded-lg p-4 mb-6 border border-[#2A2A2A]">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-[#CFCFCF]">Price per hour:</span>
-                                    <span class="text-[#EAEAEA]">$100</span>
-                                </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-[#CFCFCF]">Duration:</span>
-                                    <span class="text-[#EAEAEA]" id="duration-display">1 hour</span>
-                                </div>
-                                <hr class="border-[#2A2A2A] my-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-lg font-semibold text-[#EAEAEA]">Total:</span>
-                                    <span class="text-2xl font-bold text-[#EAEAEA]" id="total-price">$100</span>
-                                </div>
-                            </div>
 
                             <button type="submit" id="submit-booking"
                                 class="w-full py-4 rounded-xl font-semibold text-black transition bg-[#2A2A2A] hover:bg-[#343434] text-[#EAEAEA] transition-all duration-300 bg-whitshadow-[0_0_15px_rgba(255,255,255,0.35)]e">
@@ -194,53 +168,42 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const venuePrice = 100;
-        let selectedDuration = 1;
-
-        document.querySelectorAll('.duration-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('bg-[#343434]'));
-                this.classList.add('bg-[#343434]');
-
-                selectedDuration = parseInt(this.dataset.duration);
-                document.getElementById('selected-duration').value = selectedDuration;
-                updatePrice();
-            });
-        });
-
-        document.querySelector('.duration-btn[data-duration="1"]').classList.add('bg-[#343434]');
-
-        function updatePrice() {
-            const total = venuePrice * selectedDuration;
-            document.getElementById('duration-display').textContent = `${selectedDuration} hour${selectedDuration > 1 ? 's' : ''}`;
-            document.getElementById('total-price').textContent = `$${total}`;
-        }
-
         const bookingForm = document.getElementById('booking-form');
         const submitBtn = document.getElementById('submit-booking');
 
         bookingForm.addEventListener('submit', function(e) {
-            const dateInput = document.getElementById('booking-date');
-            const timeInput = document.getElementById('booking-time');
-
-            if (!dateInput.value || !timeInput.value) {
-                e.preventDefault();
-                alert('Please select both date and time');
-                return;
-            }
-
-            const bookingDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
-            const now = new Date();
-            const twoHoursFromNow = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
-            if (bookingDateTime <= twoHoursFromNow) {
-                e.preventDefault();
-                alert('Bookings must be made at least 2 hours in advance');
-                return;
-            }
+            e.preventDefault();
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Processing...';
+
+            const formData = new FormData(bookingForm);
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = '{% url "booking_venue:my_bookings" %}';
+                } else {
+                    alert(data.message);
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Confirm Booking';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm Booking';
+            });
         });
 
         const tomorrow = new Date();

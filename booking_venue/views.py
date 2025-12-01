@@ -9,6 +9,7 @@ from .models import Venue, Booking
 from .forms import BookingForm
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
+import json
 
 def main_page(request):
     """
@@ -45,39 +46,40 @@ def main_page(request):
     })
 
 
-@login_required
+@csrf_exempt
 def book_venue(request, venue_id):
-    """
-    View untuk melakukan booking stadion tertentu.
-    - Menolak booking jika waktu sudah terpakai.
-    - Menyimpan booking baru jika valid.
-    """
     venue = get_object_or_404(Venue, id=venue_id)
 
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            date = form.cleaned_data['date']
-            time = form.cleaned_data['time']
+    if request.method == 'GET':
+        return render(request, 'book_venue.html', {'venue': venue})
+    
+    elif request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse({'success': False, 'message': 'Authentication required'}, status=401)
 
-            booking = Booking(
-                user=request.user,
-                venue=venue,
-                date=date,
-                time=time,
-                status='pending'
-            )
+        try:
+            data = json.loads(request.body)
+            date = data.get('date')
+            time = data.get('time')
+        except json.JSONDecodeError:
+            date = request.POST.get('date')
+            time = request.POST.get('time')
 
-            try:
-                booking.save()
-                messages.success(request, f'Booking stadion {venue.name} berhasil!')
-                return redirect('booking_success')
-            except Exception as e:
-                messages.error(request, f'Error saving booking: {e}')
-    else:
-        form = BookingForm()
+        if not date or not time:
+             return JsonResponse({'success': False, 'message': 'Date and Time are required'}, status=400)
 
-    return render(request, 'book_venue.html', {'form': form, 'venue': venue})
+        booking = Booking(
+            user=request.user,
+            venue=venue,
+            date=date,
+            time=time,
+            status='pending'
+        )
+        try:
+            booking.save()
+            return JsonResponse({'success': True, 'message': 'Booking created successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'Error saving booking: {str(e)}'}, status=500)
 
 @login_required
 def my_bookings(request):
