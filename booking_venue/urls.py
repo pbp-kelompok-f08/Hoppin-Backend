@@ -11,4 +11,5 @@ urlpatterns = [
     path('show-venue-json/', views.api_venues, name='api_venues'),
     path('show-bookings-json/', views.api_bookings, name='api_bookings'),
     path('filter-venues-api/', views.filter_venues_api, name='filter_venues_api'),
+    path('delete-booking/<uuid:booking_id>/', views.api_delete_booking, name='api_delete_booking'),
 ]

@@ -129,7 +129,7 @@ def api_bookings(request):
     API endpoint to get bookings data for frontend.
     """
     if request.method == 'GET':
-        bookings = Booking.objects.all()
+        bookings = Booking.objects.filter(user=request.user).order_by('-date', '-time')
 
         bookings_data = []
         for booking in bookings:
@@ -145,20 +145,25 @@ def api_bookings(request):
         return JsonResponse({'bookings': bookings_data})
     else:
         return JsonResponse({'message': 'Invalid request method.'}, status=400)
+
+@csrf_exempt
+def api_delete_booking(request, booking_id):
+    """
+    API endpoint to delete a booking.
+    """
+    if request.method == 'POST':
+        booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+        booking.delete()
+        return JsonResponse({'message': 'Booking deleted successfully.'})
+    else:
+        return JsonResponse({'message': 'Invalid request method.'}, status=400)
     
 @require_GET
 @csrf_exempt
 def filter_venues_api(request):
-    """
-    API untuk memfilter venue berdasarkan region dan alphabet.
-    """
     venues = Venue.objects.all()
 
-    region_filter = request.GET.get('region', '')
     alphabet_filter = request.GET.get('alphabet', '')
-
-    if region_filter:
-        venues = venues.filter(location__icontains=region_filter)
 
     if alphabet_filter:
         if alphabet_filter.lower() == 'other':
@@ -168,17 +173,14 @@ def filter_venues_api(request):
 
     venue_list = [
         {
-            "id": v.id,
+            "id": str(v.id),
             "name": v.name,
             "location": v.location,
             "capacity": v.capacity,
-            "price": str(v.price),
+            "description": v.description,
+            "price_per_hour": 100.00,   # ✅ pakai field sama
         }
         for v in venues
     ]
 
-    return JsonResponse({
-        "venues": venue_list,
-        "current_region": region_filter,
-        "current_alphabet": alphabet_filter,
-    }, status=200)
+    return JsonResponse({"venues": venue_list})
