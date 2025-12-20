@@ -49,7 +49,7 @@ def _ensure_default_categories() -> None:
 
 def _serialize_match(match: Match) -> dict:
     return {
-        "id": match.id,
+        "id": str(match.id),
         "title": match.title,
         "category": match.category.name,
         "category_slug": match.category.slug,
@@ -318,5 +318,59 @@ def get_match(request: HttpRequest, match_id: uuid = None):
         matches = Match.objects.all()
         data = serializers.serialize("json", matches)
     return JsonResponse({"data": json.loads(data)})
+
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def api_matches_json(request: HttpRequest):
+    """JSON API endpoint for Flutter app"""
+    _ensure_default_categories()
+    
+    if not _is_schema_ready():
+        return JsonResponse({
+            "success": False,
+            "count": 0,
+            "matches": [],
+            "message": "Database schema not ready"
+        }, status=503)
+    
+    # Get query parameters for filtering
+    keyword = request.GET.get("keyword")
+    sport = request.GET.get("sport")
+    when = request.GET.get("when")
+    
+    # Start with all matches
+    matches = Match.objects.select_related("category").annotate(
+        participant_count=Count("participations")
+    ).order_by("event_date")
+    
+    # Apply filters
+    if sport:
+        matches = matches.filter(category__slug__iexact=sport)
+    
+    if when:
+        today = timezone.now().date()
+        if when == "today":
+            matches = matches.filter(event_date__date=today)
+        elif when == "week":
+            matches = matches.filter(event_date__date__range=(today, today + timedelta(days=7)))
+        elif when == "month":
+            matches = matches.filter(event_date__date__range=(today, today + timedelta(days=30)))
+    
+    if keyword:
+        matches = matches.filter(
+            Q(title__icontains=keyword)
+            | Q(description__icontains=keyword)
+            | Q(location__icontains=keyword)
+        )
+    
+    # Serialize matches
+    matches_list = [_serialize_match(match) for match in matches]
+    
+    return JsonResponse({
+        "success": True,
+        "count": len(matches_list),
+        "matches": matches_list
+    })
 
     
