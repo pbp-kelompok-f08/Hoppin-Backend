@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('liveChat/', include('liveChat.urls', namespace='livechat')),
     path('', include('accounts.urls', namespace='accounts')),
+    path('accounts/', include('accounts.urls')),
     path('matches/', include('matches.urls', namespace='matches')),
     path('threads/', include('threads.urls', namespace='threads')),
     path('booking-venue/', include('booking_venue.urls', namespace='booking_venue')),
