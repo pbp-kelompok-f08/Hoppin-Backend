@@ -6,6 +6,7 @@ app_name = "matches"
 
 urlpatterns = [
     path("", views.match_dashboard, name="dashboard"),
+    path("json/", views.api_matches_json, name="api_matches_json"),
     path("get/", views.get_match, name="get_match"),
     path("get/<uuid:match_id>", views.get_match, name="get_match"),
     path("create/", views.create_match, name="create_match"),
