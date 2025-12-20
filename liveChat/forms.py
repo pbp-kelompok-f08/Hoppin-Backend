@@ -17,4 +17,4 @@ class GroupForm(forms.ModelForm):
 class ChatForm(forms.ModelForm):
     class Meta:
         model = Chat
-        fields = ["group_id", "username", "message"]
+        fields = ["group_id", "username", "message", "replyTo"]

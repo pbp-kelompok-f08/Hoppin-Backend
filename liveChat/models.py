@@ -31,10 +31,12 @@ class Group(models.Model):
             return None
 
 class Chat(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     group_id = models.ForeignKey(to=Group, on_delete=models.CASCADE, related_name='chat')
     username = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE, related_name='chat')
     message = models.TextField(blank=False)
     createdAt = models.DateTimeField(auto_now_add=True)
+    replyTo = models.OneToOneField('self', blank=True, null=True, on_delete=models.SET_NULL, related_name='replies')
 
     class Meta:
         ordering = ["-createdAt"]
