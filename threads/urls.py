@@ -14,4 +14,5 @@ urlpatterns = [
     path('like-reply/<uuid:replyId>/', views.like_reply_ajax, name='like_reply_ajax'),
     path('thread/<uuid:thread_id>/delete', views.delete_thread, name='delete_thread'),
     path('reply/<uuid:reply_id>/delete', views.delete_reply, name='delete_reply'),
+    path('json/user/<str:username>/', views.show_json_by_user, name='show_json_by_user'),
 ]

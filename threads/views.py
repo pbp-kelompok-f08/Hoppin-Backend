@@ -162,3 +162,39 @@ def delete_reply(request, reply_id):
     reply.delete()
     return HttpResponseRedirect(reverse('threads:show_main'))
 
+
+def show_json_by_user(request, username):
+    """Get threads for a specific user - for Flutter"""
+    try:
+        # Get user
+        user = get_object_or_404(CustomUser, username=username)
+        
+        # Get user's threads
+        thread_list = Thread.objects.filter(user=user).order_by('-created_at')
+        
+        data = [
+            {
+                'user': {
+                    'username': getattr(thread.user, 'username', 'Anonymous'),
+                    'profile_picture': (
+                        thread.user.profile_picture.url
+                        if getattr(thread.user, 'profile_picture', None) and hasattr(thread.user.profile_picture, 'url')
+                        else static('accounts/img/default.png')
+                    )
+                },
+                'id': str(thread.id),
+                'content': thread.content,
+                'tags': thread.tags,
+                'image': thread.image,
+                'likeCount': thread.likeCount,
+                'shareCount': thread.shareCount,
+                'replyCount': thread.replyCount,
+                'created_at': thread.created_at,
+                'isLiked': request.user.is_authenticated and request.user in thread.liked_by.all()
+            }
+            for thread in thread_list
+        ]
+        return JsonResponse(data, safe=False)
+        
+    except CustomUser.DoesNotExist:
+        return JsonResponse([], safe=False)

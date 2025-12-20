@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 import json
 from accounts.models import CustomUser
@@ -31,7 +31,6 @@ def login(request):
             "status": False,
             "message": "Login failed, please check your username or password."
         }, status=401)
-        
         
         
 @csrf_exempt
@@ -71,3 +70,19 @@ def register(request):
             "status": False,
             "message": "Invalid request method."
         }, status=400)
+    
+@csrf_exempt
+def logout(request):
+    username = request.user.username
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logged out successfully!"
+        }, status=200)
+    except:
+        return JsonResponse({
+            "status": False,
+            "message": "Logout failed."
+        }, status=401)
