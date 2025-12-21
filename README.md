@@ -104,7 +104,7 @@ Penjaga kualitas platform: moderasi konten, kelola data, dan pantau aktivitas.
 <details>
   <summary>Lihat Link</summary>
 
-- **Link Deployment:** [Klik di sini]([https://m-naufal41-sosmed.pbp.cs.ui.ac.id/](https://m-naufal41-hoppin.pbp.cs.ui.ac.id/))  
+- **Link Deployment:** [Klik di sini](https://dion-wisdom-hoppin.pbp.cs.ui.ac.id/)  
 - **Link Design:** [Klik di sini](https://www.figma.com/design/Osg0CvVAYUswUTmNVduHXK/PBP08?node-id=0-1&t=FcctgViSzMdoNSsh-1)  
 
 </details>
