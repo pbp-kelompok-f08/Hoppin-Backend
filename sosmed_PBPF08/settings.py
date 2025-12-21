@@ -38,10 +38,10 @@ PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'm-naufal41-hoppin.pbp.cs.ui.ac.id', '.vercel.app', "10.0.2.2"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'm-naufal41-hoppin.pbp.cs.ui.ac.id', 'dion-wisdom-hoppin.pbp.cs.ui.ac.id', '.vercel.app', "10.0.2.2"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://m-naufal41-hoppin.pbp.cs.ui.ac.id", 'https://hoppin-lac.vercel.app',
+    "https://m-naufal41-hoppin.pbp.cs.ui.ac.id", "https://dion-wisdom-hoppin.pbp.cs.ui.ac.id", 'https://hoppin-lac.vercel.app',
 ]
 
 
