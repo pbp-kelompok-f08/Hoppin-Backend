@@ -118,7 +118,7 @@ def api_venues(request):
             'location': venue.location,
             'capacity': venue.capacity,
             'description': venue.description,
-            'price_per_hour': 100.00,
+            'price_per_hour': 100,
         })
 
     return JsonResponse({'venues': venues_data})
@@ -178,7 +178,7 @@ def filter_venues_api(request):
             "location": v.location,
             "capacity": v.capacity,
             "description": v.description,
-            "price_per_hour": 100.00,   # ✅ pakai field sama
+            "price_per_hour": 100,   # ✅ pakai field sama
         }
         for v in venues
     ]
